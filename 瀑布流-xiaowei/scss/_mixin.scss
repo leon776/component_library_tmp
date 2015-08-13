@@ -1,0 +1,45 @@
+/* common int */
+$textColor:#111111;
+$titleColor:#666666;
+$baseColor:#909090;
+$lightColor:#ADADAD;
+$softColor:#E0E0E0;
+$divideColor:#F2F2F2;
+/*all above are gray,and lighter down */
+$hlightColor:#F57F00; /*orange */
+$guideColor:#11AEFF; /*combridge blue */
+$likeColor:#FF76BA; /*pink */
+/* gap size */
+$gapAllSide:20px;
+$gapVertical:20px;
+$gapLandscape:10px;
+$gapVerticalSmall:5px;
+/* font size */
+$subtitleSize:16px;
+$lv3titleSize:14px;
+$baseSize:12px;
+/* layout size */
+$width:988px;
+$sideWidth:320px;
+/* function */
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+/* for css sprites */
+@import "compass/utilities/sprites"; 
+@import "compass/css3/background-size";
+$global-spacing:5px;
+$global-layout:horizontal;
+@import "global/*.png";
+ @mixin sprite-position($map,$name){
+  background-image:sprite-url($map);
+  $xpos-pre: nth(sprite-position($map, $name), 1);
+  $ypos-pre: nth(sprite-position($map, $name), 2);
+  background-position: $xpos-pre $ypos-pre;
+}
+ @mixin sprite($map,$name){
+  height: image-height(sprite-file($map, $name));
+  width: image-width(sprite-file($map, $name)); 
+  @include sprite-position($map,$name);
+}

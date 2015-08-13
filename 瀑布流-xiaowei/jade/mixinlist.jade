@@ -1,0 +1,17 @@
+mixin html()
+  doctype html
+  html
+    if block
+      block
+mixin meta()
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge, chrome=1')
+    meta(name='viewport', content='width=device-width; initial-scale=1.0')
+    meta(name="keywords",content='')
+    meta(name="description",content='瀑布流列表')
+mixin IE8()
+    // if IE 8
+     link(rel='stylesheet', href='css/ie.css')
+     script(type="text/javascript", src="js/respond.min.js")
+     script(type="text/javascript", src="js/html5.js")
+     script(type="text/javascript", src="js/selectivizr-min.js")

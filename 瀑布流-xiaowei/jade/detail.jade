@@ -1,0 +1,82 @@
+include mixinlist
+
++html
+    +meta()
+    title 瀑布流
+    link(rel='stylesheet', href='css/style.css')
+    +IE8()
+  body.detail_page
+    a.lk_back(href="javascript:history.go(-1)") 回前页
+    .wrapper
+      .main
+        .pic_show_area
+          img(src="img/1400677171_212452018_b.jpg",width="468",height="468",alt="MIA 心电图锁骨链")
+          button.btn_gather(type="button") 加入专辑 
+        .pic_preview_area#pic_preview_area
+          button.arrbtn.arrbtn_pre.arrbtn_pre_fbd(type="button",title="上一页") 上一页 
+          button.arrbtn.arrbtn_next(type="button",title="下一页") 下一页 
+          ul.pic_preview_list
+            li
+              img(src="img/1400677171_212452018_s.jpg",width="80",height="80",alt="")
+            li
+              img(src="img/1400677171_212452018_s.jpg",width="80",height="80",alt="")
+            li
+              img(src="img/1400677171_212452018_s.jpg",width="80",height="80",alt="")
+            li
+              img(src="img/1400677171_212452018_s.jpg",width="80",height="80",alt="")
+        section.similar_list
+          h3.detail_title 你可能会喜欢
+          ul.piclist
+            li
+              a.lk_showpic(href="detail.html")
+                img(src="img/1400677171_212452018_m.jpg",width="160",height="160",alt="")
+                button.btn_gather(type="button") 加入专辑 
+            li
+              a.lk_showpic(href="detail.html")
+                img(src="img/1400677171_212452018_m.jpg",width="160",height="160",alt="")
+                button.btn_gather(type="button") 加入专辑 
+            li
+              a.lk_showpic(href="detail.html")
+                img(src="img/1400677171_212452018_m.jpg",width="160",height="160",alt="")
+                button.btn_gather(type="button") 加入专辑 
+            li
+              a.lk_showpic(href="detail.html")
+                img(src="img/1400677171_212452018_m.jpg",width="160",height="160",alt="")
+                button.btn_gather(type="button") 加入专辑 
+            li
+              a.lk_showpic(href="detail.html")
+                img(src="img/1400677171_212452018_m.jpg",width="160",height="160",alt="")
+                button.btn_gather(type="button") 加入专辑  
+        //- 侧栏
+      .side
+        section.intro_box
+          h2.intro_title
+            a(href="#", target="_blank") MIA 心电图锁骨链 
+          a.lkbtn.lkbtn_m(href="#", target="_blank") ￥4800.0去购买
+          h2.intro_text 做工精致的心电图项链，记录着当年相恋的感觉。心只为你所动，让爱在身边长留。
+          //- 推荐内容
+        section.detail_recom_box
+          h3 推荐理由：
+          p.detail_recom_description 是否还记得第一次见到她时，心跳加速，频率加快，多么激动人心的感受。给女朋友戴上这条项链，永远铭记那个心动的时刻！让细水长流的爱情保持干柴烈火的激情~
+          a.lk_gather(href="",title="喜欢") 6
+          //- 所属专辑列表
+        section.detail_in_list
+          h3.detail_title 该礼物所属专辑
+          section.show_item
+            a.lk_showpic(href="detail.html")
+              img(src="img/1400677171_212452018_m.jpg",width="230",height="230",alt="")
+            h4.show_title
+              a(href="") 3D出口全棉水墨立体床上用品四件套3D出口全棉水墨立体床上用品四件套
+            p.info_sup 200个礼物
+          section.show_item
+            a.lk_showpic(href="detail.html")
+              img(src="img/1400677171_212452018_m.jpg",width="230",height="230",alt="")
+            h4.show_title
+              a(href="") 3D出口全棉水墨立体床上用品四件套
+            p.info_sup 200个礼物
+          section.show_item
+            a.lk_showpic(href="detail.html")
+              img(src="img/1400677171_212452018_m.jpg",width="230",height="230",alt="")
+            h4.show_title
+              a(href="") 3D出口全棉水墨立体床上用品四件套
+            p.info_sup 200个礼物

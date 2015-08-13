@@ -1,0 +1,118 @@
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="v_lchliu">
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <title></title>
+        <style>
+          canvas, svg{
+            transform: scale(0.5);
+          }
+          #border{
+            width: 296px;
+            height: 296px;
+          }
+        </style>
+    </head>
+    <body>
+      <canvas id="border" ></canvas>
+      <svg id="svg" width="296" height="296" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+      <script>
+        /*
+          # 绘制一个border为竖矩形的圆形
+          # @param string canvas string对象id
+            @param string color 颜色
+            @param number width 矩形长度px 
+            @param number degup 矩形间隙角度
+            @param number space 距离园边的间隙
+            @param number continueNum 要跳过绘制的角度
+         */
+        var canvasBorder = function (id, color, width, degup, space, continueNum) {
+          var _getPoint = function(deg, r) {
+            return {
+              x: radius + width + r * Math.sin(deg),
+              y: radius + width - r * Math.cos(deg)
+            }
+          };
+          var el     = document.getElementById(id),
+            radius   = el.offsetWidth / 2 - width,
+            ctx      = el.getContext("2d"),
+            space    = space || 0, deg, start, end;
+            if(el.width !== el.height) {
+              el.height = el.width = el.offsetWidth;
+            }
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            for (var i = 0; i < 360; i += degup) {
+              if(continueNum && i % continueNum === 0) {continue;}
+              deg   = (Math.PI / 180) * i;
+              start = _getPoint(deg, radius);
+              end   = _getPoint(deg, radius + width - space);
+              ctx.beginPath();
+              ctx.moveTo(start.x, start.y);
+              ctx.lineTo(end.x, end.y);
+              ctx.closePath();
+              ctx.stroke();
+          };
+        };
+        /*
+          # 绘制一个border为竖矩形的圆形 SVG版
+          # @param string canvas对象id
+            @param string 颜色
+            @param number 矩形长度px 
+            @param number 矩形间隙角度
+            @param number 距离园边的间隙
+            @param number 要跳过绘制的角度
+         */
+        var svgBorder = function (id, color, width, degup, space, continueNum) {
+          var _getPoint = function(deg, r) {
+            return {
+              x: radius + width + r * Math.sin(deg),
+              y: radius + width - r * Math.cos(deg)
+            }
+          };
+          var el     = document.getElementById(id),
+          radius   = el.offsetWidth / 2 - width,
+          xmlns = "http://www.w3.org/2000/svg",      
+          space    = space || 0, deg, start, end, line;
+          strokeStyle = color;
+          lineWidth = 1;
+          for (var i = 0; i < 360; i += degup) {
+            if(continueNum && i % continueNum === 0) {
+              continue;
+            }
+            deg   = (Math.PI / 180) * i;
+            start = _getPoint(deg, radius);
+            end   = _getPoint(deg, radius + width - space);
+            line = document.createElementNS(xmlns, "line");
+            line.setAttributeNS(null, 'stroke', strokeStyle);         
+            line.setAttributeNS(null, 'stroke-width', lineWidth);         
+            line.setAttributeNS(null, 'x1', start.x);
+            line.setAttributeNS(null, 'y1', start.y);
+            line.setAttributeNS(null, 'x2', end.x);
+            line.setAttributeNS(null, 'y2', end.y);
+            el.appendChild(line);          
+          };
+        };
+        //canvas版
+        canvasBorder('border', '#cfe4ff', 20, 2.5, 6, 45);
+        canvasBorder('border', '#c6dfff', 20, 45, 0, null);
+        //svg版
+        svgBorder('svg', '#cfe4ff', 20, 2.5, 6, 45);
+        svgBorder('svg', '#c6dfff', 20, 45, 0, null);
+      </script>
+      <div>
+        <h2>调用方法</h2>
+        <pre>
+          canvasBorder(画布或者svg的id, 虚线颜色, 虚线长度, 间隙角度, 距离圆边的距离, 要跳过绘制的角度);
+          svgBorder同样：svgBorder('svg', '#cfe4ff', 20, 2.5, 6, 45);
+        </pre>
+      </div>
+    </body>
+</html>

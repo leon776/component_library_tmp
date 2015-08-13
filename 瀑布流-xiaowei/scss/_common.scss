@@ -1,0 +1,71 @@
+@import "_mixin.scss";
+@import "compass/css3";
+.clearfix:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix {clear:both;zoom:1;display:block;}
+.hidetext{text-indent:-999em!important;overflow:hidden;}
+.animation{-webkit-animation-duration:1s;-webkit-animation-delay:.2s;-webkit-animation-timing-function:ease;-webkit-animation-fill-mode:both;-moz-animation-duration:1s;-moz-animation-delay:.2s;-moz-animation-timing-function:ease;-moz-animation-fill-mode:both}
+.text_truncation{
+  word-break: break-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
+.hoverStyle{opacity: .8;}
+.waterfall{@extend .clearfix;}
+/* ico */
+.lk_gather{
+  &:before{
+    content:"";
+    display: inline-block;
+    vertical-align: middle;
+    margin-right:3px;
+    @include sprite($global-sprites,lk_gather);
+  }
+}
+/* button */
+.lkbtn{
+  margin:$gapVertical 0;
+  display: inline-block;
+  padding:10px;
+  color: #FFF;
+  background-color:$hlightColor;
+  @include border-radius(3px);
+  &:hover{
+    @extend .hoverStyle;
+  }
+}
+.btn_gather{
+  padding:3px;
+  color: #FFF;
+  background-color: #86BF30;
+  @include border-radius(3px);
+  &:before{
+    content:"";
+    display: inline-block;
+    vertical-align: middle;
+    margin-right:3px;
+    @include sprite($global-sprites,ico_white_add);
+  }
+  &:hover{
+    opacity:.8;
+  }
+}
+.arrbtn{
+  position: absolute;
+  top:50%;
+  margin-top:-15px;
+  @extend .hidetext;
+  @include sprite($global-sprites,arrbtn_pre);
+}
+.arrbtn_pre{
+  left:0;
+}
+.arrbtn_pre_fbd{
+  @include sprite-position($global-sprites,arrbtn_pre_fbd);
+}
+.arrbtn_next{
+  right:0;
+  @include sprite-position($global-sprites,arrbtn_next);
+}
+.arrbtn_next_fbd{
+  @include sprite-position($global-sprites,arrbtn_next_fbd);
+}

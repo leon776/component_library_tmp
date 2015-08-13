@@ -1,0 +1,80 @@
+include mixinlist
+
++html
+    +meta()
+    title 定宽瀑布流
+    link(rel='stylesheet', href='css/style.css')
+    script(type="text/javascript", src="js/jquery-1.7.min.js")
+    +IE8()
+    script(type="text/javascript", src="js/jquery.masonry.min.js")
+    script(type="text/javascript")
+      (function() {
+        var BOXWIDTH = 252;
+        var COLUMNNUM = 0;
+        //先根据页面宽度构建列
+        var buildColumn = function() {
+          var num = Math.floor($(window).width() / BOXWIDTH);
+          var wrapperWidth = num * BOXWIDTH;
+          $('#wrapper_flow').css('width', wrapperWidth + 'px');
+          COLUMNNUM = num;
+          for (var i = 0; i < num; i++) {
+            $('#wrapper_flow').append('<div class="column"></div>');
+          }
+        }
+        //给新增元素定位
+        var modifyHtml = function(data, i) {
+          var html = '';
+          //for (var i = 0; i < data.length; i++) {
+            html += 
+              '<section class="show_item">' +
+                '<a href="detail.html" class="lk_showpic">'+
+                 '<div>' +
+                  '<img src="' + data[i].pic + '" width="230" height="' + data[i].height + '" alt="' + data[i].title + '">' +
+                  '<button type="button" class="btn_gather">加入专辑  </button>' +
+                 '</div>' +
+                '</a>' +
+                '<div class="show_op">' +
+                  '<a href="#" title="喜欢" class="lk_gather">6</a>' +
+                '</div>' +
+                '<h3 class="show_title">' +
+                  '<a href="#">' + data[i].title + '</a>' +
+                '</h3>' +
+              '</section>';
+          //};
+          return html;
+        };
+        var loadImg = function(callback) {
+          $.ajax({
+             type: "GET",
+             url: "get_pic.php",
+             dataType: "json",
+             success: function(data) {
+                if(data.errno === 0) {
+                  for (var i = 0; i < data.body.length; i++) {
+                    $('.column').eq(i % COLUMNNUM).append(modifyHtml(data.body, i));
+                  }
+                  if(callback) {
+                    callback();
+                  }
+                } else {
+                  throw '服务器错误';
+                }
+             }
+          });
+        };
+        $(document).ready(function() {
+          buildColumn();
+          loadImg();
+        });
+        $(window).scroll(function() {
+          //滚动距离 >= 页面高度 - 窗口高度即为底部
+          if( $(document).scrollTop() >= ($(document).height() - $(window).height()) ) {
+            loadImg();
+          }
+        });
+      })();
+  body
+    .intro_by_author 
+      p 定宽瀑布流Demo，使用流体布局，根据初始屏幕宽度计算可容纳列数。
+      p.ieshow 建议使用IE8以上版本浏览器获得更好体验，高版本浏览器将不显示此段文本:）
+    .wrapper.wrapper_flow#wrapper_flow

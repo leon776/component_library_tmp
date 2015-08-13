@@ -1,0 +1,66 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>canvas-demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<script src="canvas2html.js"></script>
+	<style>
+		body{width: 100%;height: 100%;}
+		*{margin: 0;padding: 0;}
+	</style>
+</head>
+<body>
+	<canvas id="app"></canvas>
+	<script>
+		var config = {
+			warpId : 'app',
+			pageNum : 2,
+			audioSrc: '',
+			desingWidth: 640,
+			desingHeight: 1136,
+			/*
+				string 背景图地址
+				string 渲染类型 0平铺1拉伸
+				array 进入动画开始结束帧 [start, end]
+				array 轮询动画开始结束帧 [start, end]
+				array 动画部分尺寸 [width,height]
+				array 动画部分定位 [x,y]
+				string 文字图片地址
+				array 文字图片尺寸
+			*/
+			page: [
+			 	{
+					backgroundimg: 'white_bg.jpg',
+					backgroundtype: '1',
+					entrance: [1, 50],
+					play: [52, 72],
+					position: [120, 170],
+					size: [401, 443],
+					word: 'words.png',
+					wordSizeAndPosition: [453, 256, 90, 730]
+				},
+				{
+					backgroundimg: 'bg.png',
+					backgroundtype: '0',
+					entrance: [1, 30],
+					play: [38, 58],
+					position: [120, 170],
+					size: [401, 443],
+					word: 'words.png',
+					wordSizeAndPosition: [453, 308, 90, 730]
+				}
+			]
+		};
+		var app = new app(config);
+		/*
+		//download img
+		for (var i = 1; i < 73; i++) {
+			if(i < 10){
+				i = '0' + i;
+			}
+			document.write('<img src="http://evt.dianping.com/5370/images/page_1/motion/motion_00'+i+'.jpg">');
+		};
+		*/
+	</script>
+</body>
+</html>

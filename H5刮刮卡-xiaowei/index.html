@@ -1,0 +1,252 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>刮</title>
+</head>
+<body>
+	<style>
+		#img{
+			width: 300px;
+			height: 450px;
+			position: relative;
+			-webkit-user-select: none;
+			cursor: crosshair;
+			position: absolute;
+			left: 100px;
+			top: 100px;
+
+			clip:rect(0px,300px,450px,0px);
+		}
+		#bg{
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			top: 0;
+			right: 0;
+			background-image: url('test.jpg');
+			background-size: cover;
+		}
+		#cover{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 102%;
+			height: 102%;
+			cursor: crosshair;
+			-webkit-filter: blur(3px);
+			left: -1%;
+			top: -1%;
+		}
+	</style>
+	<div style="position:relative;">
+		<div id="img">
+			<div id="bg"></div>
+			<canvas id="cover"></canvas>
+		</div>		
+	</div>
+
+	<script>
+	(function(w) {
+		var preventDefault = function (evt) {
+	        evt.stopPropagation();
+	        evt.preventDefault();
+	    };
+	    var events;
+	    if ('ontouchstart' in  window) {
+	        events = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
+	    } else {
+	        events = ['mousedown', 'mousemove', 'mouseup'];
+	    }
+		var cover = {
+			mask: {},
+			maskCtx: null,
+			cover: '#000',
+			width: 0,
+			height: 0,
+			lastPosition: [],
+			flag: false,
+			init: function(mask, type, cover, outer, drawPercentCallback) {
+				this.mask = document.getElementById(mask);
+				this.outer = document.getElementById(outer);
+				this.offsetTop = this.outer.getBoundingClientRect().top;
+				this.offsetLeft = this.outer.getBoundingClientRect().left;
+				this.cover = cover;
+				this.width = this.mask.offsetWidth;
+				this.height = this.mask.offsetHeight;
+				this.maskCtx = this.maskCtx || this.mask.getContext('2d');
+				this.resizeCanvas(this.mask, this.width, this.height);
+				this.drawCover(type);
+				this.bindEvent();
+				this.drawPercentCallback = drawPercentCallback;
+				//this.drawPoint();
+				//this._getTransparentPercent(this.maskCtx, this.width, this.height)
+			},
+			reset: function() {
+				this.offsetTop = this.outer.getBoundingClientRect().top;
+				this.offsetLeft = this.outer.getBoundingClientRect().left;
+			},
+			bindEvent: function() {
+	            for (var i = 0, len = events.length; i<len; i++) {
+	                this.mask.addEventListener(events[i], this);
+	            }
+	            this.mask.ondragstart = function() { return false; };
+			},
+				unbind: function () {
+	            for (var i = 0, len = events.length; i<len; i++) {
+	                this.mask.removeEventListener(events[i], this);
+	            }
+	            this.cover.ondragstart = null;
+	        },
+	        handleEvent: function (evt) { //to do
+	            switch (evt.type) {
+	                case 'mousedown':
+	                case 'touchstart':
+	                    this.onStart(evt);
+	                    break;
+
+	                case 'mousemove':
+	                case 'touchmove':
+	                    this.onMove(evt);
+	                    break;
+
+	                case 'mouseup':
+	                case 'touchend':
+	                case 'touchcancel':
+	                    this.onEnd(evt);
+	                    break;
+	            }
+	        },
+	        onStart: function(e) {
+	        	this.flag = true;
+	        	this.reset();
+	        	document.addEventListener('touchmove', preventDefault);
+	        },
+	        onMove: function(e) {
+	        	var touch = e.touches? e.touches[0] : e;
+            	this.touchX = touch.clientX - this.offsetLeft;
+            	this.touchY = touch.clientY - this.offsetTop;
+	        	if(this.flag) {
+	        		this.drawPoint(this.touchX, this.touchY);
+	        	}
+	        },
+	        onEnd: function() {
+	        	this.flag = false;
+            	this.lastPosition = [];
+            	document.removeEventListener('touchmove', preventDefault);
+	        },
+			resizeCanvas: function (canvas, width, height) {
+                canvas.width = width;
+                canvas.height = height;
+                canvas.getContext('2d').clearRect(0, 0, width, height);
+            },
+			drawCover: function(type) {
+				if (type == 'color') {
+                    this.maskCtx.fillStyle = this.cover;
+                    this.maskCtx.fillRect(0, 0, this.width, this.height);
+                    this.maskCtx.globalCompositeOperation = 'destination-out';
+                } else if (type == 'image') {
+                    var image = new Image();
+                    _this = this;
+                    image.onload = function () {
+                        _this.maskCtx.drawImage(this, _this._getCutSize(image)[2], _this._getCutSize(image)[3], _this._getCutSize(image)[0], _this._getCutSize(image)[1], 0, 0, _this.width, _this.height);
+                        _this.maskCtx.globalCompositeOperation = 'destination-out';
+                        //_this.drawPoint();
+                    }
+                    image.src = this.cover;
+                    //console.log(image)
+                }
+			},
+			//关键代码，涂抹路径
+			drawPoint: function(x, y) {
+                this.maskCtx.beginPath();
+                this.maskCtx.arc(x, y, 20, 0, 2 * Math.PI);
+                this.maskCtx.fill(), this.maskCtx.beginPath();
+                this.maskCtx.lineWidth = 40;
+                this.maskCtx.lineCap = this.maskCtx.lineJoin = "round";
+                this.lastPosition && this.maskCtx.moveTo(this.lastPosition[0], this.lastPosition[1]);
+                this.maskCtx.lineTo(x, y);
+                this.maskCtx.stroke();
+                this.lastPosition = [x, y];
+                //console.log(this.lastPosition)
+                if (this.drawPercentCallback) {
+                    this.drawPercentCallback.call(null, this._getTransparentPercent(this.maskCtx, this.width, this.height));
+                }
+			},
+			//按照background-size:cover的规则裁切图片
+			_getCutSize: function(img) {
+				var w = img.width, h = img.height, cW = this.width, cH = this.height, retW, retH, retX, retY;
+				if(w/h === cW/cH) {
+					retW = w;
+					retH = h;
+					retX = 0;
+					retY = 0;
+				} else {
+					if(w/h > cW/cH) {
+						retW = h * cW/cH;
+						retH = h;
+						retY = 0;
+						retX = w/2 - retW/2;
+					} else {
+						retW = w;
+						retH = w / (cW/cH);
+						retX = 0;
+						retY = h/2 - retH/2;
+					}
+				}
+				return [retW, retH, retX, retY];
+			},
+			_getTransparentPercent: function(ctx, width, height) {
+                var imgData = ctx.getImageData(0, 0, width, height),
+                        pixles = imgData.data,
+                        transPixs = [];
+                        //console.log(pixles)
+                for (var i = 0, j = pixles.length; i < j; i += 4) {
+                    var a = pixles[i + 3];
+                    if (a < 128) {
+                        transPixs.push(i);
+                    }
+                }
+                var ret = (transPixs.length / (pixles.length / 4) * 100).toFixed(2);           
+                return ret;
+            }
+		}
+		//cover.init('cover', 'color', '#FF0000');
+		w.cover = cover;
+	})(window);
+	
+	cover.init('cover', 'image', 'cover.jpg', 'img', function(data) {
+		document.getElementById('per').innerText = data;
+	});
+	//cover.init('cover', 'color', '#000', 'img', function(data) {
+	//	document.getElementById('per').innerText = data;
+	//});
+	</script>
+	<div style="position:absolute;top:600px">
+		<p>涂抹区域所占的百分比<span id="per">0</span>%（要用server或跨域模式查看）</p>
+		<p>使用方法：</p>
+		<p>
+<pre>
+/*
+	# 初始化涂抹层
+	# 参数：canvas对象id，类型：image/color，图片地址or色值，canvas所在容器的id，回调函数
+	# 返回：null
+	cover.init(mask, type, cover, outer, drawPercentCallback);
+*/
+</pre>
+		</p>
+		<p>例：</p>
+		<p>填充图片</p>
+		<pre>
+cover.init('cover', 'image', 'cover.jpg', 'img', function(data) {
+	document.getElementById('per').innerText = data;
+});
+		</pre>
+		<p>填充颜色</p>
+		<pre>
+cover.init('cover', 'color', '#000', 'img', function(data) {
+	document.getElementById('per').innerText = data;
+});
+		</pre>
+	</div>
+</body>
+</html>

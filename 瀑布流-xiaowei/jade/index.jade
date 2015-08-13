@@ -1,0 +1,82 @@
+include mixinlist
+!!! 5
+html(lang="zh-CN")
+  head
+    +meta()
+    title 自适应瀑布流
+    link(rel='stylesheet', href='css/style.css')
+    script(type="text/javascript", src="js/jquery-1.7.min.js")
+    +IE8()
+    script(type="text/javascript", src="js/jquery.masonry.min.js")
+    script(type="text/javascript")
+      (function() {
+        var init = function() {
+          $('#masonry').masonry({
+            itemSelector: '.show_item',
+            gutterWidth: 20,
+            isAnimated: true,
+            isAnimated: false,
+          });
+        };
+        //给新增元素定位
+        var reSort = function() {
+          $('#masonry').masonry("reload");
+        };
+        var modifyHtml = function(data) {
+          var html = '';
+          for (var i = 0; i < data.length; i++) {
+            html += 
+              '<section class="show_item">' +
+                '<a href="detail.html" class="lk_showpic">'+
+                  '<img src="' + data[i].pic + '" width="230" height="' + data[i].height + '" alt="' + data[i].title + '">' +
+                  '<button type="button" class="btn_gather">加入专辑  </button>' +
+                '</a>' +
+                '<div class="show_op">' +
+                  '<a href="#" title="喜欢" class="lk_gather">6</a>' +
+                '</div>' +
+                '<h3 class="show_title">' +
+                  '<a href="#">' + data[i].title + '</a>' +
+                '</h3>' +
+              '</section>';
+          };
+          return html;
+        };
+        var loadImg = function(callback) {
+          $.ajax({
+             type: "GET",
+             url: "get_pic.php",
+             dataType: "json",
+             success: function(data) {
+                //- console.log(data);
+                if(data.errno === 0) {
+                  $('#masonry').append(modifyHtml(data.body));
+                  callback();
+                } else {
+                  throw '服务器错误';
+                }
+             }
+          });
+        };
+        $(document).ready(function() {
+          loadImg(init);
+        });
+        $(window).scroll(function() {
+          //滚动距离 >= 页面高度 - 窗口高度即为底部
+          if( $(document).scrollTop() >= ($(document).height() - $(window).height()) ) {
+            loadImg(reSort);
+          }
+        });
+      })();
+  body.indexpage.waterfall
+    .intro_by_author 
+      p 响应式瀑布流Demo，使用masonry.js完成定位布局 ，通过媒体查询控制wrapper宽度，并适配浏览器窗口变化&缩放。
+      p.ieshow 建议使用IE8以上版本浏览器获得更好体验，高版本浏览器将不显示此段文本:）
+    .wrapper#masonry
+      section.show_item
+        a.lk_showpic(href="detail.html")
+          img(src="img/1400677171_212452018_m.jpg",width="230",height="230",alt="")
+          button.btn_gather(type="button") 加入专辑  
+        .show_op
+          a.lk_gather(href="",title="喜欢") 6
+        h3.show_title
+          a(href="") 3D出口全棉水墨立体床上用品四件套

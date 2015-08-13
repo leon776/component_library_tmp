@@ -1,0 +1,49 @@
+@import "mixin.scss";
+/*!
+ * @author -------- wanfor.h
+ * @type   -------- pintetrest style with sass&compass
+ */
+html, body, div, h1, h2, h3, h4, h5, h6, p, span, em, cite, del, a, img, ul, li, ol, dl, dt, dd, fieldset, legend, form, input, button, textarea, header, section, footer, article, nav, aside, adress, menu, figure, figcaption {
+  margin:0;
+  padding:0;
+  outline:none;
+}
+h1, h2, h3, h4, h5, h6, strong {
+  font-size:100%;
+  font-weight:normal;
+}
+ul {
+  list-style:none;
+}
+img {
+  border:0;
+  max-width:100%;
+}
+header, section, footer, article, nav, aside, adress, menu{
+  display:block;
+}
+input, button,body{
+  font:12px / 1.5  Helvetica,Tahoma,Arial,sans-serif;
+}
+input, button {
+  border: none;
+}
+button{
+  cursor: pointer;
+}
+em{
+  font-style:normal
+}
+body {
+  text-align:left;
+  color:$baseColor;
+  background-color:#FFF;
+}
+a{
+  text-decoration:none;
+  color:$baseColor;
+}
+.clearfix:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix {clear:both;zoom:1;}
+.hidetext{text-indent:-999em!important;overflow:hidden;}
+.animation{-webkit-animation-duration:1s;-webkit-animation-delay:.2s;-webkit-animation-timing-function:ease;-webkit-animation-fill-mode:both;-moz-animation-duration:1s;-moz-animation-delay:.2s;-moz-animation-timing-function:ease;-moz-animation-fill-mode:both}

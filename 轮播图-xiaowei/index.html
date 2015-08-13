@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>满屏轮播组件</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="http://3gimg.qq.com/mig-web/common/pc_component/common/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="http://3gimg.qq.com/mig-web/common/pc_component/full_banner/css/ibanner_full.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="http://3gimg.qq.com/mig-web/common/pc_component/full_banner/js/ibanner_full.js"></script>
+</head>
+<body>
+<div class="banner" style="height:555px">
+	<div id="homeBanner" class="iBanner">
+		<div class="iBanner-box">
+			<div class="box box-active">
+				<img src="http://jbcdn2.b0.upaiyun.com/2014/07/53a397f357d0212df7f0f4dbb2f33732.jpg" alt="">
+			</div>
+			<div class="box">
+				<a href="#"><img src="http://res.imtt.qq.com/actnew/mb/KV-2000x555-baipishu.jpg" alt=""></a>
+			</div>
+			<div class="box">
+				<img src="http://jbcdn2.b0.upaiyun.com/2014/07/53a397f357d0212df7f0f4dbb2f33732.jpg" alt="">
+			</div>
+		</div>
+		<div class="prev-mask"><div class="previous"></div></div>
+		<div class="next-mask"><div class="next"></div></div>
+		<div id="homeBannerNav" class="iBanner-nav" style="display: none;">
+			<ul>
+				<li><a data-ibanner="#homeBanner" href="#0" class="highlight active"></a></li>
+				<li><a data-ibanner="#homeBanner" href="#1"></a></li>
+				<li><a data-ibanner="#homeBanner" href="#2"></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var homeBanner = new iBanner('#homeBanner', {
+	indicator:'#homeBannerNav',
+	backgroundColor:['#ff0000', '#000000', '#000000'],
+	animate: function (activeItem, targetItem) {
+	  activeItem.hide()
+	  targetItem.show().css('opacity', 0.6).stop().animate({opacity: 1}, 500)
+	},
+	interval: 5000,
+	isAuto : true
+})
+</script>
+<div style="height:1000px;"></div>
+</body>
+</html>
